@@ -21,33 +21,27 @@ const operation = ref(1);
 const id = ref('');
 
 const props = defineProps({
-    employees: {type:Object},
-    departments: {type:Object},
-    role: {type:Object},
+    approving: {type:Object},
     position: {type:Object}
 });
 const form = useForm({
-    name:'', email:'',phone:'',department_id:'', role_id:'', position_id:''
+    name:'',  position_id:''
 });
 const formPage = useForm({});
 const onPageClick = (event)=>{
-    formPage.get(route('employees.index',{page:event}));
+    formPage.get(route('approving.index',{page:event}));
 }
-const openModal = (op,name,email,phone,department,employee,role,position) =>{
+const openModal = (op,name,approving,position) =>{
     modal.value = true;
     nextTick( () => nameInput.value.focus());
     operation.value = op;
-    id.value = employee;
+    id.value = approving;
     if(op == 1){
         title.value = 'Create employee';
     }
     else{
         title.value = 'Edit employee';
         form.name=name;
-        form.email=email;
-        form.phone=phone;
-        form.department_id=department;
-        form.role_id=role;
         form.position_id=position;
     }
 }
@@ -57,13 +51,13 @@ const closeModal = () =>{
 }
 const save = () =>{
     if(operation.value == 1){
-        form.post(route('employees.store'),{
-            onSuccess: () => {ok('Employee created')}
+        form.post(route('approving.store'),{
+            onSuccess: () => {ok('created')}
         });
     }
     else{
-        form.put(route('employees.update',id.value),{
-            onSuccess: () => {ok('Employee updated')}
+        form.put(route('approving.update',id.value),{
+            onSuccess: () => {ok('updated')}
         });
     }
 }
@@ -83,7 +77,7 @@ const deleteEmployee = (id,name) =>{
         cancelButtonText:'<i class="fa-solid fa-ban"></i> Cancel'
     }).then((result) => {
         if(result.isConfirmed) {
-            form.delete(route('employees.destroy',id),{
+            form.delete(route('approving.destroy',id),{
                 onSuccess: () =>{ok('Employee deleted')}
             });
         }
@@ -94,11 +88,11 @@ const deleteEmployee = (id,name) =>{
 </script>
 
 <template>
-    <Head title="Employees" />
+    <Head title="Approving" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Employees</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Approving</h2>
         </template>
 
         <div class="py-12">
@@ -115,39 +109,25 @@ const deleteEmployee = (id,name) =>{
                         <tr class="bg-gray-100">
                             <th class="px-2 py-2">#</th>
                             <th class="px-2 py-2">NAME</th>
-                            <th class="px-2 py-2">EMAIL</th>
-                            <th class="px-2 py-2">PHONE</th>
-                            <th class="px-2 py-2">DEPARTMENT</th>
                             <th class="px-2 py-2">POSITION</th>
-                            <th class="px-2 py-2">ROLE</th>
                             <th class="px-2 py-2"></th>
                             <th class="px-2 py-2"></th>
                             <th class="px-2 py-2"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="emp, i in employees.data" :key="emp.id">
+                        <tr v-for="app, i in approving.data" :key="app.id">
                         <td class="border border-gray-400 px-2 py-2">{{ (i+1) }}</td>
-                        <td class="border border-gray-400 px-2 py-2">{{ emp.name }}</td>
-                        <td class="border border-gray-400 px-2 py-2">{{ emp.email }}</td>
-                        <td class="border border-gray-400 px-2 py-2">{{ emp.phone }}</td>
-                        <td class="border border-gray-400 px-2 py-2">{{ emp.department }}</td>
-                        <td class="border border-gray-400 px-2 py-2">{{ emp.position }}</td>
-                        <td class="border border-gray-400 px-2 py-2">{{ emp.role }}</td>
-                        <td class="border border-gray-400 px-4 py-4">
-                            <Link :href="route('employees.edit',emp.id)"
-                            :class="'px-4 py-2 bg-green-400 text-white border rounded-md font-semibold text-xs'">
-                            <i class="fa-solid fa-add">Travel</i>
-                            </Link>
-                        </td>
+                        <td class="border border-gray-400 px-2 py-2">{{ app.name }}</td>
+                        <td class="border border-gray-400 px-2 py-2">{{ app.position }}</td>
                         <td class="border border-gray-400 px-2 py-2">
                             <WarningButton 
-                            @click="openModal(2,emp.name,emp.email,emp.phone,emp.department_id,emp.id)">
+                            @click="openModal(2,app.name,app.id)">
                                 <i class="fa-solid fa-edit"></i>
                             </WarningButton>
                         </td>
                         <td class="border border-gray-400 px-2 py-2">
-                            <DangerButton @click="deleteEmployee(emp.id,emp.name)">
+                            <DangerButton @click="deleteEmployee(app.id,app.name)">
                                 <i class="fa-solid fa-trash"></i>
                             </DangerButton>
                         </td>
@@ -157,8 +137,8 @@ const deleteEmployee = (id,name) =>{
             </div>
             <div class="bg-white grid v-screen place-items-center">
                 <VueTailwindPagination
-                    :current="employees.currentPage" :total="employees.total"
-                    :per-page="employees.perPage"
+                    :current="approving.currentPage" :total="approving.total"
+                    :per-page="approving.perPage"
                     @page-changed="onPageClick($event)"
                 ></VueTailwindPagination>
             </div>
@@ -171,34 +151,6 @@ const deleteEmployee = (id,name) =>{
                 v-model="form.name" type="text" class="mt-1 block w-3/4"
                 placeholder="Name"></TextInput>
                 <InputError :message="form.errors.name" class="mt-2"></InputError>
-            </div>
-            <div class="p-3">
-                <InputLabel for="email" value="Email:"></InputLabel>
-                <TextInput id="email"
-                v-model="form.email" type="text" class="mt-1 block w-3/4"
-                placeholder="Email"></TextInput>
-                <InputError :message="form.errors.email" class="mt-2"></InputError>
-            </div>
-            <div class="p-3">
-                <InputLabel for="phone" value="Phone:"></InputLabel>
-                <TextInput id="phone"
-                v-model="form.phone" type="text" class="mt-1 block w-3/4"
-                placeholder="Phone"></TextInput>
-                <InputError :message="form.errors.phone" class="mt-2"></InputError>
-            </div>
-            <div class="p-3">
-                <InputLabel for="department_id" value="Department:"></InputLabel>
-                <SelectInput id="department_id" :options="departments"
-                v-model="form.department_id" type="text" class="mt-1 block w-3/4"
-                ></SelectInput>
-                <InputError :message="form.errors.department_id" class="mt-2"></InputError>
-            </div>
-            <div class="p-3">
-                <InputLabel for="role_id" value="Role:"></InputLabel>
-                <SelectInput id="role_id" :options="role"
-                v-model="form.role_id" type="text" class="mt-1 block w-3/4"
-                ></SelectInput>
-                <InputError :message="form.errors.role_id" class="mt-2"></InputError>
             </div>
             <div class="p-3">
                 <InputLabel for="position_id" value="Position:"></InputLabel>

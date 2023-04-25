@@ -11,17 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('approvings', function (Blueprint $table) {
             $table->id();
-            $table->string('name',150);
-            $table->string('email',80);
-            $table->string('phone',15);
-            $table->foreignId('department_id')
-            ->constrained('departments')
-            ->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('role_id')
-            ->constrained('roles')
-            ->onUpdate('cascade')->onDelete('restrict');
+            $table->string('name',100);
             $table->foreignId('position_id')
             ->constrained('positions')
             ->onUpdate('cascade')->onDelete('restrict');
@@ -34,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('approvings');
     }
 };

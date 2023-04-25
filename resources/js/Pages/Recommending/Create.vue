@@ -6,41 +6,31 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head,useForm } from '@inertiajs/vue3';
 
-const props = defineProps({ employee:{type:Object}});
 const form = useForm({
-    name:props.employee.name,
-    email:props.employee.email
+    name:''
 });
-
 </script>
 
 <template>
-    <Head title="Edit Department" />
+    <Head title="Add Recommending" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Travel Order</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Add Recommending</h2>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="p-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <!-- <form @submit.prevent="form.patch(route('departments.update',department))"
-                    class="mt-6 space-y-6 max-w-xl"> -->
-                    <form class="mt-6 space-y-6 max-w-xl">
-                    <InputLabel for="name" value="Add Travel Order for"></InputLabel>
-                    <TextInput id="name" v-model="form.name" autofocus required readonly
+                    <form @submit.prevent="form.post(route('recommending.store'))"
+                    class="mt-6 space-y-6 max-w-xl">
+                    <InputLabel for="name" value="Recomending"></InputLabel>
+                    <TextInput id="name" v-model="form.name" autofocus required
                     type="text"
                     class="mt-1 block w-full"></TextInput>
                     <InputError :message="form.errors.name" class="mt-2"></InputError>
-
-                    <TextInput id="name" v-model="form.email" autofocus required readonly
-                    type="text"
-                    class="mt-1 block w-full"></TextInput>
-                    <InputError :message="form.errors.name" class="mt-2"></InputError>
-
                     <PrimaryButton :disabled="form.processing">
-                        <i class="fa-solid fa-save"></i> Submit
+                        <i class="fa-solid fa-save"></i> Save
                     </PrimaryButton>
                     </form>
                 </div>

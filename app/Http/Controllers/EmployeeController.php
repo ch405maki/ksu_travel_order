@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Department;
+use App\Models\Role;
+use App\Models\Position;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use DB;
@@ -13,13 +15,18 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::select('employees.id','employees.name','email','phone',
-        'department_id','departments.name as department')
+        'department_id', 'role_id', 'position_id', 'departments.name as department', 'roles.name as role', 'positions.name as position')
         ->join('departments','departments.id','=','employees.department_id')
+        ->join('roles', 'roles.id', '=', 'employees.role_id')
+        ->join('positions', 'positions.id', '=', 'employees.position_id')
         ->paginate(10);
 
         $departments = Department::all();
+        $role = Role::all();
+        $position = Position::all();
+
         return Inertia::render('Employees/Index',['employees' => $employees,
-        'departments' => $departments]);
+        'departments' => $departments, 'role' => $role, 'position'=> $position]);
     }
     public function store(Request $request)
     {
@@ -27,7 +34,9 @@ class EmployeeController extends Controller
             'name' => 'required|max:150',
             'email' => 'required|max:80',
             'phone' => 'required|max:15',
-            'department_id' => 'required|numeric'
+            'department_id' => 'required|numeric',
+            'role_id' => 'required|numeric',
+            'position_id' => 'required|numeric'
         ]);
         $employee = new Employee($request->input());
         $employee->save();

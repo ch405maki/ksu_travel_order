@@ -6,7 +6,12 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
-
+use App\Http\Controllers\PositionController;
+use App\Http\Controllers\NatureController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TravelController;
+use App\Http\Controllers\RecommendingController;
+use App\Http\Controllers\ApprovingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,6 +42,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('departments', DepartmentController::class);
     Route::resource('employees', EmployeeController::class);
+    Route::resource('position', PositionController::class);
+    Route::resource('nature', NatureController::class);
+    Route::resource('role', RoleController::class);
+    Route::resource('travel', TravelController::class);
+    Route::resource('approving', ApprovingController::class);
+    Route::resource('recommending', RecommendingController::class);
     Route::get('graphic',[EmployeeController::class,'EmployeeByDepartment'])->name('graphic');
     Route::get('reports',[EmployeeController::class,'reports'])->name('reports');
 });
