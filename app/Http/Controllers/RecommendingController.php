@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
+use App\Models\Department;
+use App\Models\Role;
+use App\Models\Position;
 use App\Models\Recommending;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,8 +17,12 @@ class RecommendingController extends Controller
      */
     public function index()
     {
-        $recommending = Recommending::all();
-        return Inertia::render('Recommending/Index',['recommending' => $recommending]);
+        $recommending = Recommending::select('recommendings.id', 'recommendings.name','position_id','positions.name as position')
+        ->join('positions', 'positions.id', '=', 'recommendings.position_id')
+        ->paginate(10);
+
+        $position = Position::all();
+        return Inertia::render('Recommending/Index', ['recommending' => $recommending, 'position' => $position]);
     }
 
     /**
@@ -22,7 +30,7 @@ class RecommendingController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Recommending/Create');
+        //
     }
 
     /**
@@ -30,7 +38,10 @@ class RecommendingController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|max:100']);
+        $request->validate([
+            'name' => 'required|max:150',
+            'position_id' => 'required|numeric'
+        ]);
         $recommending = new Recommending($request->input());
         $recommending->save();
         return redirect('recommending');
@@ -57,8 +68,11 @@ class RecommendingController extends Controller
      */
     public function update(Request $request, Recommending $recommending)
     {
-        $request->validate(['name' => 'required|max:100']);
-        $recommending->update($request->all());
+        $request->validate([
+            'name' => 'required|max:150',
+            'position_id' => 'required|numeric'
+        ]);
+        $recommending->update($request->input());
         return redirect('recommending');
     }
 
@@ -67,6 +81,7 @@ class RecommendingController extends Controller
      */
     public function destroy(Recommending $recommending)
     {
-        //
+        $recommending->delete();
+        return redirect('recommending');
     }
 }

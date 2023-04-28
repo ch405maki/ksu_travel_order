@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('recommendings', function (Blueprint $table) {
             $table->id();
             $table->string('name',100);
+            $table->foreignId('position_id')
+            ->constrained('positions')
+            ->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

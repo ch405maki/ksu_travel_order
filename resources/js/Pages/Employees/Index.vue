@@ -131,9 +131,9 @@ const deleteEmployee = (id,name) =>{
                         <td class="border border-gray-400 px-2 py-2">{{ emp.name }}</td>
                         <td class="border border-gray-400 px-2 py-2">{{ emp.email }}</td>
                         <td class="border border-gray-400 px-2 py-2">{{ emp.phone }}</td>
-                        <td class="border border-gray-400 px-2 py-2">{{ emp.department }}</td>
-                        <td class="border border-gray-400 px-2 py-2">{{ emp.position }}</td>
-                        <td class="border border-gray-400 px-2 py-2">{{ emp.role }}</td>
+                        <td class="border border-gray-400 px-2 py-2">{{ emp.department.name }}</td>
+                        <td class="border border-gray-400 px-2 py-2">{{ emp.position.name }}</td>
+                        <td class="border border-gray-400 px-2 py-2">{{ emp.role.name }}</td>
                         <td class="border border-gray-400 px-4 py-4">
                             <Link :href="route('employees.edit',emp.id)"
                             :class="'px-4 py-2 bg-green-400 text-white border rounded-md font-semibold text-xs'">

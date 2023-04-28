@@ -20,13 +20,25 @@ return new class extends Migration
             $table->string('purpose');
             $table->string('source');
             $table->string('destination');
-            $table->unsignedBigInteger('nature_id');
-            $table->unsignedBigInteger('recommending_id');
-            $table->unsignedBigInteger('approving_id');
-            $table->timestamp('recommended_at')->nullable();
-            $table->timestamp('approved_at')->nullable();
-            $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('updated_by');
+            $table->foreignId('employee_id')
+            ->constrained('employees')
+            ->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('position_id')
+            ->constrained('positions')
+            ->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('nature_id')
+            ->constrained('natures')
+            ->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('recommending_id')
+            ->constrained('recommendings')
+            ->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('approving_id')
+            ->constrained('approvings')
+            ->onUpdate('cascade')->onDelete('restrict');
+            $table->string('recommended_at')->nullable();
+            $table->string('approved_at')->nullable();
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }

@@ -14,12 +14,7 @@ class EmployeeController extends Controller
 {
     public function index()
     {
-        $employees = Employee::select('employees.id','employees.name','email','phone',
-        'department_id', 'role_id', 'position_id', 'departments.name as department', 'roles.name as role', 'positions.name as position')
-        ->join('departments','departments.id','=','employees.department_id')
-        ->join('roles', 'roles.id', '=', 'employees.role_id')
-        ->join('positions', 'positions.id', '=', 'employees.position_id')
-        ->paginate(10);
+        $employees = Employee::with(['department', 'role', 'position'])->paginate(10);
 
         $departments = Department::all();
         $role = Role::all();
@@ -65,12 +60,14 @@ class EmployeeController extends Controller
         $employee->delete();
         return redirect('employees');
     }
+
     public function EmployeeByDepartment(){
         $data = Employee::select(DB::raw('count(employees.id) as count, departments.name'))
         ->join('departments','departments.id','=','employees.department_id')
         ->groupBy('departments.name')->get();
         return Inertia::render('Employees/Graphic',['data' => $data]);
     }
+    
     public function reports(){
         $employees = Employee::select('employees.id','employees.name','email','phone',
         'department_id','departments.name as department')
