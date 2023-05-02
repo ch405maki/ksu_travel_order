@@ -4,31 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Travel extends Model
 {
     use HasFactory;
         protected $fillable = [
         'ref_num',
-        'time_travel',
-        'date_from_travel',
-        'date_to_travel',
-        'purpose',
-        'source',
-        'destination',
-        'employee_id',
-        'position_id',
-        'nature_id',
-        'recommending_id',
-        'approving_id',
-        'recommended_at',
-        'approved_at',
         'created_by',
         'updated_by'
     ];
 
-    protected $with = ['employee', 'position', 'nature', 'recommending', 'approving'];
+    protected $table = 'travel';
 
+    protected $with = ['trips', 'employee', 'position', 'nature', 'recommending', 'approving', 'passenger'];
+    
+    public function trips()
+    {
+        return $this->hasMany(\App\Models\Trip::class);
+    }
 
     public function employee()
     {
@@ -54,4 +48,10 @@ class Travel extends Model
     {
         return $this->belongsTo(Approving::class);
     }
+
+    public function passenger()
+    {
+        return $this->belongsTo(Passenger::class);
+    }
 }
+
