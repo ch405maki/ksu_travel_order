@@ -26,6 +26,7 @@ const props = defineProps({
     position: {type:Object},
     employee: {type:Object},
     nature: {type:Object},
+    trip: {type:Object},
     recommending: {type:Object},
 });
 const form = useForm({
@@ -142,17 +143,34 @@ const deleteEmployee = (id,ref_num) =>{
                         <tr class="bg-gray-100">
                             <th class="px-2 py-2">#</th>
                             <th class="px-2 py-2">REF. NUMBER</th>
-                            <th class="px-2 py-2">NAME OF OFFICIAL</th>
-                            <th class="px-2 py-2"></th>
-                            <th class="px-2 py-2"></th>
-                            <th class="px-2 py-2"></th>
+                            <th class="px-2 py-2">TRIPS</th>
+                            <th class="px-2 py-2">CREATED BY</th>
+                            <th class="px-2 py-2">UPDATED BY</th>
+                            <th class="px-2 py-2">ACTION</th>
+                            <th class="px-2 py-2">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="tra, i in travel.data" :key="tra.id">
+                        <tr v-for="(tra, i) in travel" :key="i">
                         <td class="border border-gray-400 px-2 py-2">{{ (i+1) }}</td>
                         <td class="border border-gray-400 px-2 py-2">{{ tra.ref_num }}</td>
-                        <td class="border border-gray-400 px-2 py-2">{{ tra.employee.name }}</td>
+                        <td class="border border-gray-400 px-2 py-2">
+                            
+                                <p v-for="(val, index) in tra.trips" :key="index">
+                                    <div>
+                                        <p>Trip: {{ val.time_travel }}</p>
+                                        <p>Passengers</p>
+                                        <ol>
+                                            <li v-for="(passenger, ind) in val.passengers">
+                                                {{ ind + 1 }}: {{ passenger.employee.name }}
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </p>
+                        </td>
+                        <td class="border border-gray-400 px-2 py-2">{{ tra.created_by }}</td>
+                        <td class="border border-gray-400 px-2 py-2">{{ tra.updated_by }}</td>
+                        
                         <td class="border border-gray-400 px-2 py-2">
                             <WarningButton 
                             @click="openModal(2,tra.ref_num,tra.id)">
@@ -237,11 +255,12 @@ const deleteEmployee = (id,ref_num) =>{
 
             <div class="p-3">
                 <InputLabel for="employee_id" value="Name of Official:"></InputLabel>
-                <SelectInput id="employee_id" :options="employee"
-                v-model="form.employee_id" type="text" class="mt-1 block w-3/4"
-                ></SelectInput>
+                <select id="employee_id" multiple v-model="form.employee_id" class="mt-1 block w-3/4">
+                    <option v-for="emp in employee" :value="emp.id">{{ emp.name }}</option>
+                </select>
                 <InputError :message="form.errors.employee_id" class="mt-2"></InputError>
             </div>
+
 
             <div class="p-3">
                 <InputLabel for="position_id" value="Position:"></InputLabel>

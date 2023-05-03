@@ -20,7 +20,7 @@ class TravelController extends Controller
      */
     public function index()
     {
-        $travel = Travel::with(['employee', 'position', 'nature', 'recommending', 'approving', 'trip', 'passenger'])->paginate(10);
+        //$travel = Travel::with(['trips'])->paginate(10);
 
         $employee = Employee::all();
         $position = Position::all();
@@ -29,8 +29,9 @@ class TravelController extends Controller
         $approving = Approving::all();
         $trip = Trip::all();
         $passenger = Passenger::all();
-
+        
         $travel = Travel::all();
+        // $travel = Travel::all()->select('id','ref_num','created_by','updated_by');
 
         return Inertia::render('Travel/Index',
             [   
@@ -105,21 +106,27 @@ class TravelController extends Controller
             
             // Save the new Trip record
             if ($trip->save()) {
-                // Create a new Passenger record
-                $passenger = new Passenger([
-                    'trip_id' => $trip->id,
-                    'employee_id' => $request->employee_id,
-                    'position_id' => $request->position_id
-                ]);
-                // Save the new Passenger record
-                $passenger->save();
+                // Get the selected employee IDs from the form data
+                $employeeIds = $request->input('employee_id');
             
-                // Create relationships between the Trip, Travel, and Passenger records
-                $trip->travel()->associate($travel);
-                $passenger->trip()->attach($trip);
+                // Create an array of Passenger records with the trip ID and employee IDs
+                $passengers = [];
+                foreach ($employeeIds as $employeeId) {
+                    $passengers[] = new Passenger([
+                        'trip_id' => $trip->id,
+                        'employee_id' => $employeeId,
+                        'position_id' => $request->position_id
+                    ]);
+                }
             
-                return redirect('travel');
-            } else {
+                // Save all the Passenger records at once
+                $passengersSaved = $trip->passengers()->saveMany($passengers);
+            
+                if ($passengersSaved) {
+                    return redirect('travel');
+                }
+            }
+            else {
                 // Travel was not saved successfully
                 return redirect('travel')->with('error', 'There was an error saving.');
             }

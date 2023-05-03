@@ -37,29 +37,7 @@ class Trip extends Model
 
     public function passengers()
     {
-        return $this->hasMany(\App\Models\Passenger::class);
+        return $this->hasMany(\App\Models\Passenger::class, 'trip_id', 'id');
     }
-
-    // public function nature()
-    // {
-    //     return $this->belongsTo(Nature::class);
-    // }
-
-    // public function recommending()
-    // {
-    //     return $this->belongsTo(Recommending::class);
-    // }
-
-    // public function approving()
-    // {
-    //     return $this->belongsTo(Approving::class);
-    // }
-
-    // public function trip()
-    // {
-    //     return $this->belongsTo(Trip::class);
-    // }
-
-
     
 }

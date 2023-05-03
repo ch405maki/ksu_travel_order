@@ -26,6 +26,9 @@ class Passenger extends Model
         return $this->belongsTo(Employee::class);
     }
 
-
+    public function trip()
+    {
+        return $this->belongsTo(\App\Models\Trip::class);
+    }
 
 }
