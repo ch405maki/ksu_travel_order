@@ -143,33 +143,40 @@ const deleteEmployee = (id,name) =>{
                 ></VueTailwindPagination>
             </div>
         </div>
-        <Modal :show="modal" @close="closeModal">
-            <h2 class="p-3 text-lg font.medium text-hray-900">{{ title }}</h2>
-            <div class="p-3 mt-6">
-                <InputLabel for="name" value="Name:"></InputLabel>
-                <TextInput id="name" ref="nameInput"
-                v-model="form.name" type="text" class="mt-1 block w-3/4"
-                placeholder="Name"></TextInput>
-                <InputError :message="form.errors.name" class="mt-2"></InputError>
-            </div>
-            <div class="p-3">
-                <InputLabel for="position_id" value="Position:"></InputLabel>
-                <SelectInput id="position_id" :options="position"
-                v-model="form.position_id" type="text" class="mt-1 block w-3/4"
-                ></SelectInput>
-                <InputError :message="form.errors.position_id" class="mt-2"></InputError>
-            </div>
-            <div class="p-3 mt-6">
-                <PrimaryButton :disabled="form.processing" @click="save">
-                    <i class="fa-solid fa-save"></i> Save
-                </PrimaryButton>
-            </div>
-            <div class="p-3 mt-6 flex justify-end">
-                <SecondaryButton class="ml-3" :disabled="form.processing"
-                @click="closeModal">
-                    Cancel
-                </SecondaryButton>
-            </div>
+        <Modal :show="modal" @close="closeModal" maxWidth="2xl">
+            <section class="p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 w-full">
+
+                <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white">Add Travel Order</h2>
+
+                <form>
+                    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1">
+                            <div class="p-3 mt-6">
+                                <InputLabel for="name" value="Name:"></InputLabel>
+                                <TextInput id="name" ref="nameInput"
+                                v-model="form.name" type="text" class="mt-1 block  w-full"
+                                placeholder="Name"></TextInput>
+                                <InputError :message="form.errors.name" class="mt-2"></InputError>
+                            </div>
+                            <div class="p-3">
+                                <InputLabel for="position_id" value="Position:"></InputLabel>
+                                <SelectInput id="position_id" :options="position"
+                                v-model="form.position_id" type="text" class="mt-1 block  w-full"
+                                ></SelectInput>
+                                <InputError :message="form.errors.position_id" class="mt-2"></InputError>
+                            </div>
+                            <div class="p-3 mt-6">
+                                <PrimaryButton :disabled="form.processing" @click="save">
+                                    <i class="fa-solid fa-save"></i> Save
+                                </PrimaryButton>
+
+                                <SecondaryButton class="ml-3" :disabled="form.processing"
+                                @click="closeModal">
+                                    Cancel
+                                </SecondaryButton>
+                            </div>
+                        </div>
+                    </form>
+            </section>
         </Modal>
     </AuthenticatedLayout>
 </template>

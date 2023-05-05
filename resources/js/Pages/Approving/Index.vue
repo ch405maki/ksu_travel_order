@@ -148,14 +148,14 @@ const deleteEmployee = (id,name) =>{
             <div class="p-3 mt-6">
                 <InputLabel for="name" value="Name:"></InputLabel>
                 <TextInput id="name" ref="nameInput"
-                v-model="form.name" type="text" class="mt-1 block w-3/4"
+                v-model="form.name" type="text" class="mt-1 block  w-full"
                 placeholder="Name"></TextInput>
                 <InputError :message="form.errors.name" class="mt-2"></InputError>
             </div>
             <div class="p-3">
                 <InputLabel for="position_id" value="Position:"></InputLabel>
                 <SelectInput id="position_id" :options="position"
-                v-model="form.position_id" type="text" class="mt-1 block w-3/4"
+                v-model="form.position_id" type="text" class="mt-1 block  w-full"
                 ></SelectInput>
                 <InputError :message="form.errors.position_id" class="mt-2"></InputError>
             </div>
@@ -163,8 +163,7 @@ const deleteEmployee = (id,name) =>{
                 <PrimaryButton :disabled="form.processing" @click="save">
                     <i class="fa-solid fa-save"></i> Save
                 </PrimaryButton>
-            </div>
-            <div class="p-3 mt-6 flex justify-end">
+
                 <SecondaryButton class="ml-3" :disabled="form.processing"
                 @click="closeModal">
                     Cancel

@@ -38,3 +38,4 @@ const form = useForm({
         </div>
     </AuthenticatedLayout>
 </template>
+

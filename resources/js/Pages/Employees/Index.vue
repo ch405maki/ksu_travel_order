@@ -134,12 +134,6 @@ const deleteEmployee = (id,name) =>{
                         <td class="border border-gray-400 px-2 py-2">{{ emp.department.name }}</td>
                         <td class="border border-gray-400 px-2 py-2">{{ emp.position.name }}</td>
                         <td class="border border-gray-400 px-2 py-2">{{ emp.role.name }}</td>
-                        <td class="border border-gray-400 px-4 py-4">
-                            <Link :href="route('employees.edit',emp.id)"
-                            :class="'px-4 py-2 bg-green-400 text-white border rounded-md font-semibold text-xs'">
-                            <i class="fa-solid fa-add">Travel</i>
-                            </Link>
-                        </td>
                         <td class="border border-gray-400 px-2 py-2">
                             <WarningButton 
                             @click="openModal(2,emp.name,emp.email,emp.phone,emp.department_id,emp.id)">
@@ -163,47 +157,52 @@ const deleteEmployee = (id,name) =>{
                 ></VueTailwindPagination>
             </div>
         </div>
-        <Modal :show="modal" @close="closeModal">
-            <h2 class="p-3 text-lg font.medium text-hray-900">{{ title }}</h2>
-            <div class="p-3 mt-6">
+        <Modal :show="modal" @close="closeModal" maxWidth="7xl">
+            <section class="p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 w-full">
+
+                <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white">Add Travel Order</h2>
+
+                <form>
+                    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                        <div class="p-3 ">
                 <InputLabel for="name" value="Name:"></InputLabel>
                 <TextInput id="name" ref="nameInput"
-                v-model="form.name" type="text" class="mt-1 block w-3/4"
+                v-model="form.name" type="text" class="mt-1 block  w-full"
                 placeholder="Name"></TextInput>
                 <InputError :message="form.errors.name" class="mt-2"></InputError>
             </div>
             <div class="p-3">
                 <InputLabel for="email" value="Email:"></InputLabel>
                 <TextInput id="email"
-                v-model="form.email" type="text" class="mt-1 block w-3/4"
+                v-model="form.email" type="text" class="mt-1 block  w-full"
                 placeholder="Email"></TextInput>
                 <InputError :message="form.errors.email" class="mt-2"></InputError>
             </div>
             <div class="p-3">
                 <InputLabel for="phone" value="Phone:"></InputLabel>
                 <TextInput id="phone"
-                v-model="form.phone" type="text" class="mt-1 block w-3/4"
+                v-model="form.phone" type="text" class="mt-1 block  w-full"
                 placeholder="Phone"></TextInput>
                 <InputError :message="form.errors.phone" class="mt-2"></InputError>
             </div>
             <div class="p-3">
                 <InputLabel for="department_id" value="Department:"></InputLabel>
                 <SelectInput id="department_id" :options="departments"
-                v-model="form.department_id" type="text" class="mt-1 block w-3/4"
+                v-model="form.department_id" type="text" class="mt-1 block  w-full"
                 ></SelectInput>
                 <InputError :message="form.errors.department_id" class="mt-2"></InputError>
             </div>
             <div class="p-3">
                 <InputLabel for="role_id" value="Role:"></InputLabel>
                 <SelectInput id="role_id" :options="role"
-                v-model="form.role_id" type="text" class="mt-1 block w-3/4"
+                v-model="form.role_id" type="text" class="mt-1 block  w-full"
                 ></SelectInput>
                 <InputError :message="form.errors.role_id" class="mt-2"></InputError>
             </div>
             <div class="p-3">
                 <InputLabel for="position_id" value="Position:"></InputLabel>
                 <SelectInput id="position_id" :options="position"
-                v-model="form.position_id" type="text" class="mt-1 block w-3/4"
+                v-model="form.position_id" type="text" class="mt-1 block  w-full"
                 ></SelectInput>
                 <InputError :message="form.errors.position_id" class="mt-2"></InputError>
             </div>
@@ -211,13 +210,14 @@ const deleteEmployee = (id,name) =>{
                 <PrimaryButton :disabled="form.processing" @click="save">
                     <i class="fa-solid fa-save"></i> Save
                 </PrimaryButton>
-            </div>
-            <div class="p-3 mt-6 flex justify-end">
                 <SecondaryButton class="ml-3" :disabled="form.processing"
                 @click="closeModal">
                     Cancel
                 </SecondaryButton>
             </div>
+                    </div>
+                </form>
+            </section>
         </Modal>
     </AuthenticatedLayout>
 </template>
