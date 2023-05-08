@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import 'template/css/main.css';
+@import 'template/css/base.min.css';
+@import 'template/css/fancy.min.css';
+
+/* @vite(['resources/css/base.min.css', 'resources/css/fancy.min.css', 'resources/css/main.css']); */
+
+/* @import "~template/css/base.min.css";
+@import "~template/css/fancy.min.css";
+@import "~template/css/main.css"; */

@@ -205,6 +205,11 @@ const deleteEmployee = (id,ref_num) =>{
                             <td class="border border-gray-400 px-2 py-2">{{ tra.updated_by }}</td>
                             <td class="border border-gray-400 px-2 py-2 text-center">
                             <div class="space-x-2">
+                                <Link :href="route('travel.show',tra.id)"
+                                    :class="'px-4 py-2 bg-blue-400 text-white border rounded-md font-semibold text-xs'">
+                                    <i class="fa-solid fa-eye"></i>
+                                </Link>
+
                                 <WarningButton @click="openModal(2,tra.ref_num,tra.id)">
                                     <i class="fa-solid fa-edit"></i>
                                 </WarningButton>
