@@ -144,7 +144,7 @@ class TravelController extends Controller
      */
     public function show(Travel $travel)
     {
-        return Inertia::render('Travel/Show');
+        return Inertia::render('Travel/Show', ['travel' => $travel]);
     }
 
     /**

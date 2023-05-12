@@ -12,7 +12,6 @@ import Modal from '@/Components/Modal.vue';
 import { Head,Link,useForm } from '@inertiajs/vue3';
 import { nextTick,ref } from 'vue';
 import Swal from 'sweetalert2';
-import VueTailwindPagination from '@ocrv/vue-tailwind-pagination';
 
 const nameInput = ref(null);
 const modal = ref(false);
